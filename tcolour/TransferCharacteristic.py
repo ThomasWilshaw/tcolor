@@ -1,18 +1,10 @@
 from enum import Enum
-
-class TransferCharacteristicType(Enum):
-    URI = 1
-    PARAMETRIC = 2
-    NAMED = 3
-
-class ParametricType(Enum):
-    POWER = 1
     
 class TransferCharacteristic():
     """Defines a Transfer Characteristic, stored as either a URI, a Parametric or a Named function."""
 
-    def __init__(self, type:TransferCharacteristicType) -> None:
-        self.type = type
+    def __init__(self) -> None:
+        pass
 
     def forward_transfer(data):
         """Processes data with the given characteristic transfer function in the forwards direction"""
@@ -28,9 +20,8 @@ class TransferCharacteristic():
 class TransferCharacteristicParametric(TransferCharacteristic):
     """A parametric transfer function."""
 
-    def __init__(self, type: TransferCharacteristicType, function:ParametricType, parameters:dict) -> None:
-        super().__init__(type)
-        self.function = function
+    def __init__(self, parameters:dict) -> None:
+        super().__init__()
         self.parameters = parameters
 
     def __repr__(self) -> str:
@@ -39,8 +30,8 @@ class TransferCharacteristicParametric(TransferCharacteristic):
 class TransferCharacteristicPow(TransferCharacteristicParametric):
     """A power function transfer characteristic"""
 
-    def __init__(self, type: TransferCharacteristicType, function=ParametricType.POWER, parameters: dict={"a": 1.0}) -> None:
-        super().__init__(type, function, parameters)
+    def __init__(self, parameters: dict={"a": 1.0}) -> None:
+        super().__init__(parameters)
 
     @property
     def parameters(self):
@@ -72,8 +63,8 @@ class TransferCharacteristicPow(TransferCharacteristicParametric):
 class TransferCharacteristicPowWithBreak(TransferCharacteristicParametric):
     """A power function with a linear segment near zero transfer characteristic"""
 
-    def __init__(self, type: TransferCharacteristicType, function: ParametricType, parameters: dict) -> None:
-        super().__init__(type, function, parameters)
+    def __init__(self, parameters: dict) -> None:
+        super().__init__(parameters)
 
     @property
     def parameters(self):

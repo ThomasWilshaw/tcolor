@@ -3,7 +3,7 @@ from tcolour import TransferCharacteristic as TC
 
 class TestTransferCharacteristicPow(unittest.TestCase):
     def test_forward_transfer(self):
-        TCP = TC.TransferCharacteristicPow(TC.TransferCharacteristicType.PARAMETRIC, parameters={'a': 2.2})
+        TCP = TC.TransferCharacteristicPow(parameters={'a': 2.2})
 
         data = [0.0, 0.1, 0.5, 1.0]
         out = TCP.forward_transfer(data)
@@ -13,7 +13,7 @@ class TestTransferCharacteristicPow(unittest.TestCase):
         self.assertListEqual(out, check)
 
     def test_inverse_transfer(self):
-        TCP = TC.TransferCharacteristicPow(TC.TransferCharacteristicType.PARAMETRIC, parameters={'a': 2.2})
+        TCP = TC.TransferCharacteristicPow(parameters={'a': 2.2})
 
         data = [0.0, 0.1, 0.5, 1.0]
         out = TCP.inverse_transfer(data)

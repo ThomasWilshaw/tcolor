@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
     col.achromatic = [0.3127, 0.329]
 
-    col.transfer_characteristic = TransferCharacteristicPow(TransferCharacteristicType.PARAMETRIC, parameters={'a': 2.2})
+    col.transfer_characteristic = TransferCharacteristicPow(parameters={'a': 2.2})
     col.hints["key"] = "value"
     col.alias["key"] = "value"
 
