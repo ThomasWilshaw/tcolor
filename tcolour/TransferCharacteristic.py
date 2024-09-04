@@ -86,6 +86,8 @@ class TransferCharacteristicPowWithBreak(TransferCharacteristicParametric):
                 item = self.parameters["a"] * pow(item, 1.0 / self.parameters["g"]) + self.parameters["b"]
             new_data.append(item)
 
+        return new_data
+
     def inverse_transfer(self, data):
         new_data = []
         cut_off = self.parameters["c"] * self.parameters["d"]
@@ -96,3 +98,5 @@ class TransferCharacteristicPowWithBreak(TransferCharacteristicParametric):
             else:
                 item = pow((item - self.parameters["b"]) / self.parameters["a"], self.parameters["g"])
             new_data.append(item)
+
+        return new_data
