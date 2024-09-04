@@ -27,7 +27,7 @@ class TransferCharacteristicParametric(TransferCharacteristic):
     def __repr__(self) -> str:
         return super().__repr__()
     
-class TransferCharacteristicPow(TransferCharacteristicParametric):
+class TransferCharacteristicPower(TransferCharacteristicParametric):
     """A power function transfer characteristic"""
 
     def __init__(self, parameters: dict={"a": 1.0}) -> None:
@@ -40,7 +40,7 @@ class TransferCharacteristicPow(TransferCharacteristicParametric):
     @parameters.setter
     def parameters(self, value):
         if type(value) is not dict: raise Exception("Parameters must be a dict")
-        if len(value) != 1: raise Exception("TransferCharacteristicPow only takes one parameter.")
+        if len(value) != 1: raise Exception("TransferCharacteristicPower only takes one parameter.")
         self._parameters = value
 
     def forward_transfer(self, data):
@@ -58,9 +58,9 @@ class TransferCharacteristicPow(TransferCharacteristicParametric):
         return new_data
 
     def __repr__(self) -> str:
-        return "TransferCharacteristic(type=%r, function=%r, parameters=%r)" % (self.type, self.function, self.parameters)
+        return "TransferCharacteristicPower(parameters=%r)" % (self.parameters)
     
-class TransferCharacteristicPowWithBreak(TransferCharacteristicParametric):
+class TransferCharacteristicPowerWithBreak(TransferCharacteristicParametric):
     """A power function with a linear segment near zero transfer characteristic"""
 
     def __init__(self, parameters: dict) -> None:
@@ -73,7 +73,7 @@ class TransferCharacteristicPowWithBreak(TransferCharacteristicParametric):
     @parameters.setter
     def parameters(self, value):
         if type(value) is not dict: raise Exception("TransferCharacteristic parameters must be a dict")
-        if len(value) != 5: raise Exception("TransferCharacteristicPowWithBreak only exactly five parameters.")
+        if len(value) != 5: raise Exception("TransferCharacteristicPowerWithBreak takes only exactly five parameters.")
         self._parameters = value
 
     def forward_transfer(self, data):
@@ -100,3 +100,6 @@ class TransferCharacteristicPowWithBreak(TransferCharacteristicParametric):
             new_data.append(item)
 
         return new_data
+    
+    def __repr__(self) -> str:
+        return "TransferCharacteristicPowerWithBreak(parameters=%r)" % (self.parameters)

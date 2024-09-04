@@ -31,7 +31,7 @@ class Colourimetry:
 
     """
     def __init__(self, descriptor:str="", rgb_primaries:RGBPrimaries=RGBPrimaries(), achromatic:list=[], 
-                 transfer_characteristic:TransferCharacteristic=None, hints:dict={}, alias:dict={},
+                 transfer_characteristic:TransferCharacteristic=None, hints:list=[], alias:list=[],
                  cie_version:CIEVersion=None) -> None:
         self.descriptor = descriptor
         self.primaries = rgb_primaries
@@ -58,9 +58,9 @@ if __name__ == "__main__":
 
     col.achromatic = [0.3127, 0.329]
 
-    col.transfer_characteristic = TransferCharacteristicPow(parameters={'a': 2.2})
-    col.hints["key"] = "value"
-    col.alias["key"] = "value"
+    col.transfer_characteristic = TransferCharacteristicPower(parameters={'a': 2.2})
+    col.hints.append("value")
+    col.alias.append("value")
 
     col.cie_version = CIEVersion.CIE_1931_2_DEGREE
 

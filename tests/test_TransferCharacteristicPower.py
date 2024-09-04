@@ -1,9 +1,9 @@
 import unittest
 from tcolour import TransferCharacteristic as TC
 
-class TestTransferCharacteristicPow(unittest.TestCase):
+class TestTransferCharacteristicPower(unittest.TestCase):
     def setUp(self) -> None:
-        self.TCP = TC.TransferCharacteristicPow(parameters={'a': 2.2})
+        self.TCP = TC.TransferCharacteristicPower(parameters={'a': 2.2})
 
     def test_forward_transfer(self):
         data = [0.0, 0.1, 0.5, 1.0]
