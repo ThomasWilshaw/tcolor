@@ -55,14 +55,14 @@ class TransferCharacteristicPow(TransferCharacteristicParametric):
     def forward_transfer(self, data):
         new_data = []
         for idx, x in enumerate(data):
-            new_data.append(pow(x, self.parameters.keys[0]))
+            new_data.append(pow(x, list(self.parameters.values())[0]))
 
         return new_data
 
     def inverse_transfer(self, data):
         new_data = []
         for idx, x in enumerate(data):
-            new_data.append(pow(x, 1.0 / self.parameters.keys[0]))
+            new_data.append(pow(x, 1.0 / list(self.parameters.values())[0]))
 
         return new_data
 
