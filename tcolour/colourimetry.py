@@ -9,6 +9,12 @@ class RGBPrimaries():
         self.g = g
         self.b = b
 
+    def valid(self) -> bool:
+        if not self.r or not self.g or not self.b:
+            return False
+
+        return True
+
     def __repr__(self) -> str:
         return "RGBPrimaries(r=%r, g=%r, b=%r)" % (self.r, self.g, self.b)
     
@@ -41,6 +47,22 @@ class Colourimetry:
         self.alias = alias
         self.cie_version = cie_version
 
+    def achromatic_valid(self) -> bool:
+        if(type(self.achromatic) is not list):
+            return False
+        if(len(self.achromatic) != 2):
+            return False
+        return True
+
+    def colourspace_valid(self) -> bool:
+        if not self.primaries.valid():
+            return False
+        if not self.achromatic_valid():
+            return False
+        if not self.transfer_characteristic.valid():
+            return False
+        return True
+
     def __repr__(self) -> str:
         return "Colourimetry(descriptor=%r,primaries=%r, achromatic=%r, transfer_characteristic=%r, hints=%r, alias=%r, cie_version=%r)" \
             % (self.descriptor, self.primaries, self.achromatic, self.transfer_characteristic, self.hints, self.alias, self.cie_version)
@@ -63,6 +85,8 @@ if __name__ == "__main__":
     col.alias.append("value")
 
     col.cie_version = CIEVersion.CIE_1931_2_DEGREE
+
+    print(col.colourspace_valid())
 
     print(repr(col))
 

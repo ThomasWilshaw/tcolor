@@ -14,6 +14,9 @@ class TransferCharacteristic():
         """Processes data with the given characteristic transfer function in the inverse direction"""
         pass
 
+    def valid(self) -> bool:
+        return False
+
     def __repr__(self) -> str:
         return "TransferCharacteristic(type=%r)" % (self.type)
     
@@ -56,6 +59,9 @@ class TransferCharacteristicPower(TransferCharacteristicParametric):
             new_data.append(pow(x, 1.0 / list(self.parameters.values())[0]))
 
         return new_data
+
+    def valid(self) -> bool:
+        return True
 
     def __repr__(self) -> str:
         return "TransferCharacteristicPower(parameters=%r)" % (self.parameters)
@@ -101,5 +107,8 @@ class TransferCharacteristicPowerWithBreak(TransferCharacteristicParametric):
 
         return new_data
     
+    def valid(self) -> bool:
+        return True
+
     def __repr__(self) -> str:
         return "TransferCharacteristicPowerWithBreak(parameters=%r)" % (self.parameters)
