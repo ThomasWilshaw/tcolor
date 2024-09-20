@@ -1,0 +1,80 @@
+- sRGB OETF:
+    Transfer Characteristic:
+        - Type: parametric
+        - Function: powerwithbreak
+        - Parameters: {
+            a: 1.055,
+            b: -0.055,
+            c: 12.92,
+            d: 0.0031308,
+            g: 2.4
+        }
+    
+- sRGB EOTF:
+    Transfer Characteristic:
+        - Type: parametric
+        - Function: power
+        - Parameters: {
+            a: 2.2
+        }
+    
+- BT.709 Primaries:
+    RGB Primaries: {
+        Red: {x: 0.640, y: 0.330},
+        Green: {x: 0.300, y: 0.600},
+        Blue: {x: 0.150, y: 0.060}
+    }
+    
+- D65 White:
+    Achromatic Centroid: {x: 0.3127, y: 0.3290}
+    
+- sRGB Presentation:
+    RGB Primaries: BT.709 Primaries,
+    Achromatic Centroid: D65 White,
+    Transfer Characteristic:
+        - Type: Sequence,
+        - Sequence:
+            - { Descriptor: sRGB OETF, Direction: forward }
+            - { Descriptor: sRGB EOTF, Direction: inverse }
+    
+- DCI-P3 Primaries:
+    RGB Primaries: {
+        Red: {x: 0.680, y: 0.320},
+        Green: {x: 0.265, y: 0.690},
+        Blue: {x: 0.150, y: 0.060}
+    }
+    
+- Display P3 Presentation:
+    RGB Primaries: DCI-P3 Primaries
+    Achromatic Centroid: D65 White
+    Transfer Characteristic:
+        - Type: Sequence
+        - Sequence:
+            - { Descriptor: sRGB OETF, Direction: forward }
+            - { Descriptor: sRGB EOTF, Direction: inverse }
+    
+- Alexa LogC 800 EI SUP V3:
+    Transfer Characteristic:
+        - Type: parametric
+        - Function: log10withbreak
+        - Parameters: {
+            a: 5.555556,
+            b: 0.052272,
+            c: 0.247190,
+            d: 0.385537,
+            e: 5.367655,
+            f: 0.092809,
+            h: 0.010591
+        }
+
+- Sonfu Custom InHouse Transfer:
+    Transfer Characteristic:
+        - Type: URI,
+        - URI: Sonfu-1D.spi1d
+    
+# Append aliases to the previous definition
+- sRGB Presentation:
+    Alias:
+        - sRGB,
+        - Internal_srgb_v2.0,
+        - IEC sRGB
