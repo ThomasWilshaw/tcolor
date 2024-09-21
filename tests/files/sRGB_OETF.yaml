@@ -1,0 +1,11 @@
+- sRGB OETF:
+    Transfer Characteristic:
+        - Type: Parametric
+        - Function: powerwithbreak
+        - Parameters: {
+            a: 1.055,
+            b: -0.055,
+            c: 12.92,
+            d: 0.0031308,
+            g: 2.4
+        }

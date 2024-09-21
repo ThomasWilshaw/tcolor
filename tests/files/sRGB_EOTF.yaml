@@ -1,0 +1,7 @@
+- sRGB EOTF:
+    Transfer Characteristic:
+        - Type: Parametric
+        - Function: power
+        - Parameters: {
+            a: 2.2
+        }

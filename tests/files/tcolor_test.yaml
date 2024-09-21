@@ -1,6 +1,6 @@
 - sRGB OETF:
     Transfer Characteristic:
-        - Type: parametric
+        - Type: Parametric
         - Function: powerwithbreak
         - Parameters: {
             a: 1.055,
@@ -12,7 +12,7 @@
     
 - sRGB EOTF:
     Transfer Characteristic:
-        - Type: parametric
+        - Type: Parametric
         - Function: power
         - Parameters: {
             a: 2.2
@@ -32,7 +32,7 @@
     RGB Primaries: BT.709 Primaries,
     Achromatic Centroid: D65 White,
     Transfer Characteristic:
-        - Type: Sequence,
+        - Type: Sequence
         - Sequence:
             - { Descriptor: sRGB OETF, Direction: forward }
             - { Descriptor: sRGB EOTF, Direction: inverse }
@@ -55,7 +55,7 @@
     
 - Alexa LogC 800 EI SUP V3:
     Transfer Characteristic:
-        - Type: parametric
+        - Type: Parametric
         - Function: log10withbreak
         - Parameters: {
             a: 5.555556,
@@ -69,7 +69,7 @@
 
 - Sonfu Custom InHouse Transfer:
     Transfer Characteristic:
-        - Type: URI,
+        - Type: URI
         - URI: Sonfu-1D.spi1d
     
 # Append aliases to the previous definition
