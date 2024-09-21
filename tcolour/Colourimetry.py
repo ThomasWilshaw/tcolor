@@ -1,5 +1,4 @@
 from enum import Enum
-from tcolour import TransferCharacteristic as tc
 
 class RGBPrimaries():
     """Defines a set of three RGB primaries using the CIE xy coordinate system."""
@@ -37,7 +36,7 @@ class Colourimetry:
 
     """
     def __init__(self, descriptor:str="", rgb_primaries:RGBPrimaries=RGBPrimaries(), achromatic:list=[], 
-                 transfer_characteristic:tc.TransferCharacteristic=None, hints:list=[], alias:list=[],
+                 transfer_characteristic=None, hints:list=[], alias:list=[],
                  cie_version:CIEVersion=None) -> None:
         self.descriptor = descriptor
         self.primaries = rgb_primaries
@@ -68,27 +67,4 @@ class Colourimetry:
     def __repr__(self) -> str:
         return "Colourimetry(descriptor=%r,primaries=%r, achromatic=%r, transfer_characteristic=%r, hints=%r, alias=%r, cie_version=%r)" \
             % (self.descriptor, self.primaries, self.achromatic, self.transfer_characteristic, self.hints, self.alias, self.cie_version)
-
-
-if __name__ == "__main__":
-    col = Colourimetry()
-    print(col.__doc__)
-
-    col.descriptor = "sRGB"
-
-    col.primaries.r = [0.64, 0.33]
-    col.primaries.g = [0.3, 0.6]
-    col.primaries.b = [0.15, 0.06]
-
-    col.achromatic = [0.3127, 0.329]
-
-    col.transfer_characteristic = tc.TransferCharacteristicPower(parameters={'a': 2.2})
-    col.hints.append("value")
-    col.alias.append("value")
-
-    col.cie_version = CIEVersion.CIE_1931_2_DEGREE
-
-    print(col.colourspace_valid())
-
-    print(repr(col))
 
