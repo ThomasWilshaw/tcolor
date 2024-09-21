@@ -20,6 +20,12 @@ class TColor():
         except KeyError as e:
             print("YAML ERROR: ", e)
 
+    def achromatic_centroid_from_YAML(self, yaml_input):
+        try:
+            return [yaml_input["x"], yaml_input["y"]]
+        except KeyError as e:
+            print("YAML ERROR: ", e)
+
 
     def parse_data(self, data:list):
         """Parse the YAML data"""
@@ -38,7 +44,11 @@ class TColor():
                     new_colourimetry_set.primaries = primaries
 
             if "Achromatic Centroid" in colour_space:
-                new_colourimetry_set.achromatic = colour_space["Achromatic Centroid"]
+                achromatic_centroid = colour_space["Achromatic Centroid"]
+                if type(achromatic_centroid) is dict:
+                    new_colourimetry_set.achromatic = self.achromatic_centroid_from_YAML(achromatic_centroid)
+                else:
+                    new_colourimetry_set.achromatic = achromatic_centroid
 
             if "Transfer Characteristic" in colour_space:
                 new_colourimetry_set.transfer_characteristic = colour_space["Transfer Characteristic"]
