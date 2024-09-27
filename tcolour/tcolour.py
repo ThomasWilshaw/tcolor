@@ -41,7 +41,7 @@ class TColor():
                     raise ValueError("Transfer Characteristic function not supported", function)
 
             elif tc_type == "Sequence":
-                raise ValueError("Transfer Characteristic type Sequece not yet supported", yaml_input)
+                return TransferCharacteristic.TransferCharacteristicSequence(yaml_input[1]["Sequence"])
 
             elif tc_type == "URI":
                 raise ValueError("Transfer Characteristic type URI not yet supported", yaml_input)

@@ -6,11 +6,11 @@ class TransferCharacteristic():
     def __init__(self) -> None:
         pass
 
-    def forward_transfer(data):
+    def forward_transfer(self, data):
         """Processes data with the given characteristic transfer function in the forwards direction"""
         pass
 
-    def inverse_transfer(data):
+    def inverse_transfer(self, data):
         """Processes data with the given characteristic transfer function in the inverse direction"""
         pass
 
@@ -18,7 +18,7 @@ class TransferCharacteristic():
         return False
 
     def __repr__(self) -> str:
-        return "TransferCharacteristic(type=%r)" % (self.type)
+        return "TransferCharacteristic()" 
     
 class TransferCharacteristicParametric(TransferCharacteristic):
     """A parametric transfer function."""
@@ -112,3 +112,26 @@ class TransferCharacteristicPowerWithBreak(TransferCharacteristicParametric):
 
     def __repr__(self) -> str:
         return "TransferCharacteristicPowerWithBreak(parameters=%r)" % (self.parameters)
+
+class TransferCharacteristicSequence(TransferCharacteristic):
+    """A transfer function made from a sequence of other transfer functions
+        Holds an ordered list of pairs of transfer characteristics and directions
+        (either forward or inverse)
+    """
+
+    def __init__(self, sequence:list) -> None:
+        self.sequence = sequence
+
+    def forward_transfer(self):
+        return self.sequence
+
+    def inverse_transfer(self):
+        sequence_copy = self.sequence.copy()
+        sequence_copy.reverse()
+        return sequence_copy
+
+    def valid(self) -> bool:
+        return True
+
+    def __repr__(self) -> str:
+        return "TransferCharacteristicPower(sequence=%r)" % (self.sequence)
