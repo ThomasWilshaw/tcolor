@@ -37,6 +37,8 @@ class TColor():
                     return TransferCharacteristic.TransferCharacteristicPowerWithBreak(yaml_input[2]["Parameters"])
                 elif function == "power":
                     return TransferCharacteristic.TransferCharacteristicPower(yaml_input[2]["Parameters"])
+                elif function == "log10withbreak":
+                    return TransferCharacteristic.TransferCharacteristicLog10WithBreak(yaml_input[2]["Parameters"])
                 else:
                     raise ValueError("Transfer Characteristic function not supported", function)
 
