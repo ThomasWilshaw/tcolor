@@ -1,6 +1,7 @@
 import yaml
 import Colourimetry
 import TransferCharacteristic
+import uritools
 
 class TColor():
     """Contains a set of known colour spaces. Allows for interacting with and 
@@ -46,7 +47,10 @@ class TColor():
                 return TransferCharacteristic.TransferCharacteristicSequence(yaml_input[1]["Sequence"])
 
             elif tc_type == "URI":
-                raise ValueError("Transfer Characteristic type URI not yet supported", yaml_input)
+                if uritools.isuri(yaml_input[1]["URI"]):
+                    return TransferCharacteristic.TransferCharacteristicURI(yaml_input[1]["URI"])
+                else:
+                    raise ValueError("YAML ERROR, invalid URI: ", yaml_input)
 
             else:
                raise ValueError("YAML ERROR, invald Transfer Characteristic type: ", yaml_input)
@@ -118,4 +122,5 @@ if __name__ == "__main__":
 
     for key, value in config.config.items():
         print(key, value)
+        print()
         pass

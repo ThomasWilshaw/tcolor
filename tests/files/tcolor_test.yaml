@@ -70,7 +70,7 @@
 - Sonfu Custom InHouse Transfer:
     Transfer Characteristic:
         - Type: URI
-        - URI: Sonfu-1D.spi1d
+        - URI: file:Sonfu-1D.spi1d
     
 # Append aliases to the previous definition
 - sRGB Presentation:

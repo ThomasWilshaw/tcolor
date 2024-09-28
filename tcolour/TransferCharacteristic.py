@@ -199,3 +199,21 @@ class TransferCharacteristicSequence(TransferCharacteristic):
 
     def __repr__(self) -> str:
         return "TransferCharacteristicPower(sequence=%r)" % (self.sequence)
+
+class TransferCharacteristicURI(TransferCharacteristic):
+    """A transfer characteristic that references an external file"""
+
+    def __init__(self, URI) -> None:
+        self.URI = URI
+
+    def forward_transfer(self, data):
+        print("ERROR: You didn't think I'd written my own LUT engine yet did you?")
+
+    def inverse_transfer(self,data):
+        print("ERROR: You didn't think I'd written my own LUT engine yet did you?")
+
+    def valid(self) -> bool:
+        return True
+
+    def __repr__(self) -> str:
+        return "TransferCharacteristicURI(URI=%r)" % (self.URI)
