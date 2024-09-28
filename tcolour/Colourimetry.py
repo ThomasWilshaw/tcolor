@@ -17,6 +17,9 @@ class RGBPrimaries():
     def __repr__(self) -> str:
         return "RGBPrimaries(r=%r, g=%r, b=%r)" % (self.r, self.g, self.b)
     
+    def __str__(self) -> str:
+        return "%r, %r, %r" % (self.r, self.g, self.b)
+
 class CIEVersion(Enum):
     CIE_1931_2_DEGREE = 1
     CIE_2015_2_DEGREE = 2

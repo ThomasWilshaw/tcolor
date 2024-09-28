@@ -66,7 +66,7 @@ class TransferCharacteristicPower(TransferCharacteristicParametric):
 
     def __repr__(self) -> str:
         return "TransferCharacteristicPower(parameters=%r)" % (self.parameters)
-    
+
 class TransferCharacteristicPowerWithBreak(TransferCharacteristicParametric):
     """A power function with a linear segment near zero transfer characteristic"""
 

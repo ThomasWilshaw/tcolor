@@ -104,14 +104,29 @@ class TColor():
                 print(e, "Skipping this Colourimetry chunk")
                 
 
-
-
     def add_colour_space(self, colour_space):
         """Add a colour space to the config as either a file or a string"""
 
         with open(colour_space, 'r') as file:
             data = yaml.safe_load(file)
             self.parse_data(data)
+
+    def print_colourimetry(self, descriptor):
+        """Pretty prints the colourimetry data set for the given descriptor"""
+
+        item:Colourimetry = config.config[descriptor]
+        print("-", item.descriptor)
+        print("\tRGB Primaries: " + item.primaries.__str__())
+        print("\tAchromatic Centroid: ", item.achromatic)
+        print("\tTransfer Characteristic:",  item.transfer_characteristic)
+        print("\tHints: ", item.hints)
+        print("\tAlias: ", item.alias)
+        print("\tCIE Version:", item.cie_version)
+        print()
+
+    def print_all_colourimetry(self):
+        for key, value in self.config.items():
+            self.print_colourimetry(key)
             
 
 
@@ -119,8 +134,4 @@ if __name__ == "__main__":
     config = TColor()
 
     config.add_colour_space("..\\tests\\files\\tcolor_test.yaml")
-
-    for key, value in config.config.items():
-        print(key, value)
-        print()
-        pass
+    config.print_all_colourimetry()
