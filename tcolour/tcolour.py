@@ -3,7 +3,7 @@ from . import Colourimetry
 from . import TransferCharacteristic
 import uritools
 
-class TColor():
+class TColour():
     """Contains a set of known colour spaces. Allows for interacting with and 
     adding or removing colour spaces"""
 
