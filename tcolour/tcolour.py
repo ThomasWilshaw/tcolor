@@ -1,6 +1,6 @@
 import yaml
-import Colourimetry
-import TransferCharacteristic
+from . import Colourimetry
+from . import TransferCharacteristic
 import uritools
 
 class TColor():
@@ -149,7 +149,7 @@ class TColor():
     def print_colourimetry(self, descriptor):
         """Pretty prints the colourimetry data set for the given descriptor"""
 
-        item:Colourimetry = config.config[descriptor]
+        item:Colourimetry = self.config[descriptor]
         print("-", item.descriptor)
         print("\tRGB Primaries: " + item.primaries.__str__())
         print("\tAchromatic Centroid: ", item.achromatic)
