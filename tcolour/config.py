@@ -4,8 +4,8 @@ from . import transfer_characteristic as tc
 import uritools
 
 class Config():
-    """Contains a set of known colour spaces. Allows for interacting with and 
-    adding or removing colour spaces"""
+    """Contains a set of colourimetry chunks. Allows for interacting with and 
+    adding or removing colourimetry chunks"""
 
     def __init__(self) -> None:
         self.config = {}
@@ -104,8 +104,8 @@ class Config():
             yaml_colourimetry = data[id][name]
 
             if name in self.config:
-                print("WARNING: Colour space repeated (" + name + ")")
-                print("Only Alias and Hints can be merged. To redifine colourimetry lease delete the chunk and re add")
+                print("WARNING: Colour imetry chunk repeated (" + name + "). Will attempt merge")
+                print("Only Alias and Hints can be merged. To redifine colourimetry please delete the chunk and re add")
                 new_colourimetry = self.colourimetry_from_YAML(name, yaml_colourimetry)
                 existing_colourimetry = self.config[name]
 
@@ -137,13 +137,23 @@ class Config():
                 #print(key)
                 
 
-    def add_colour_space(self, colour_space):
-        """Add a colour space to the config as either a file or a string"""
+    def add_colourimetry(self, input):
+        """Add a colourinemtry data to the config as either a file or a string"""
 
-        with open(colour_space, 'r') as file:
-            data = yaml.safe_load(file)
-            self.parse_data(data)
-            self.update_references()
+        if isinstance(input, str):
+            with open(input, 'r') as file:
+                data = yaml.safe_load(file)
+                self.parse_data(data)
+                self.update_references()
+        elif isinstance(input, colourimetry.Colourimetry):
+            if input.descriptor in self.config:
+                existing_colourimetry = self.config[input.descriptor]
+                existing_colourimetry.hints = existing_colourimetry.hints + input.hints
+                existing_colourimetry.alias = existing_colourimetry.alias + input.alias
+            else:
+                self.config[input.descriptor] = input
+        else:
+            raise TypeError("Input Colourimetry is of the wrong type. Must be file path of Colourimetry() class")
 
     def print_colourimetry(self, descriptor):
         """Pretty prints the colourimetry data set for the given descriptor or alias"""
@@ -176,5 +186,5 @@ class Config():
 if __name__ == "__main__":
     config = Config()
 
-    config.add_colour_space("..\\tests\\files\\tcolor_test.yaml")
+    config.add_colourimetry("..\\tests\\files\\tcolor_test.yaml")
     config.print_all_colourimetry()
