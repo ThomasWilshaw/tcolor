@@ -1,22 +1,22 @@
 import yaml
-from . import Colourimetry
-from . import TransferCharacteristic
+from . import colourimetry
+from . import transfer_characteristic as tc
 import uritools
 
-class TColour():
+class Config():
     """Contains a set of known colour spaces. Allows for interacting with and 
     adding or removing colour spaces"""
 
     def __init__(self) -> None:
         self.config = {}
 
-    def RGBPrimaries_from_YAML(self, yaml_input) -> Colourimetry.RGBPrimaries:
+    def RGBPrimaries_from_YAML(self, yaml_input) -> colourimetry.RGBPrimaries:
         try:
             red = yaml_input["Red"]
             green = yaml_input["Green"]
             blue = yaml_input["Blue"]
 
-            primaries = Colourimetry.RGBPrimaries(list(red.values()), list(green.values()), list(blue.values()))
+            primaries = colourimetry.RGBPrimaries(list(red.values()), list(green.values()), list(blue.values()))
 
             return primaries
         except KeyError as e:
@@ -35,20 +35,20 @@ class TColour():
             if tc_type == "Parametric":
                 function = yaml_input[1]["Function"]
                 if function == "powerwithbreak":
-                    return TransferCharacteristic.TransferCharacteristicPowerWithBreak(yaml_input[2]["Parameters"])
+                    return tc.TransferCharacteristicPowerWithBreak(yaml_input[2]["Parameters"])
                 elif function == "power":
-                    return TransferCharacteristic.TransferCharacteristicPower(yaml_input[2]["Parameters"])
+                    return tc.TransferCharacteristicPower(yaml_input[2]["Parameters"])
                 elif function == "log10withbreak":
-                    return TransferCharacteristic.TransferCharacteristicLog10WithBreak(yaml_input[2]["Parameters"])
+                    return tc.TransferCharacteristicLog10WithBreak(yaml_input[2]["Parameters"])
                 else:
                     raise ValueError("Transfer Characteristic function not supported", function)
 
             elif tc_type == "Sequence":
-                return TransferCharacteristic.TransferCharacteristicSequence(yaml_input[1]["Sequence"])
+                return tc.TransferCharacteristicSequence(yaml_input[1]["Sequence"])
 
             elif tc_type == "URI":
                 if uritools.isuri(yaml_input[1]["URI"]):
-                    return TransferCharacteristic.TransferCharacteristicURI(yaml_input[1]["URI"])
+                    return tc.TransferCharacteristicURI(yaml_input[1]["URI"])
                 else:
                     raise ValueError("YAML ERROR, invalid URI: ", yaml_input)
 
@@ -59,7 +59,7 @@ class TColour():
             print("YAML ERROR: ", e)
 
     def colourimetry_from_YAML(self,name, yaml_colourimetry):
-        new_colourimetry_set = Colourimetry.Colourimetry()
+        new_colourimetry_set = colourimetry.Colourimetry()
         new_colourimetry_set.descriptor = name
 
         if "RGB Primaries" in yaml_colourimetry:
@@ -67,7 +67,7 @@ class TColour():
             if type(primaries) is dict:
                 new_colourimetry_set.primaries = self.RGBPrimaries_from_YAML(primaries)
             elif type(primaries) is str:
-                new_colourimetry_set.primaries = Colourimetry.RGBPrimaries(reference=primaries)
+                new_colourimetry_set.primaries = colourimetry.RGBPrimaries(reference=primaries)
             else:
                 new_colourimetry_set.primaries = primaries
 
@@ -83,7 +83,7 @@ class TColour():
             if type(transfer_characteristic) is list:
                 new_colourimetry_set.transfer_characteristic = self.transfer_charactersitc_from_YAML(transfer_characteristic)
             else:
-                new_colourimetry_set.transfer_characteristic = TransferCharacteristic.TransferCharacteristic()
+                new_colourimetry_set.transfer_characteristic = tc.TransferCharacteristic()
 
         if "Hints" in yaml_colourimetry:
             new_colourimetry_set.hints = yaml_colourimetry["Hints"]
@@ -148,7 +148,7 @@ class TColour():
     def print_colourimetry(self, descriptor):
         """Pretty prints the colourimetry data set for the given descriptor or alias"""
 
-        item:Colourimetry = self.get_colourimetry(descriptor)
+        item:colourimetry = self.get_colourimetry(descriptor)
         print("-", item.descriptor)
         print("\tRGB Primaries: " + item.primaries.__str__())
         print("\tAchromatic Centroid: ", item.achromatic)
@@ -162,7 +162,7 @@ class TColour():
         for key, value in self.config.items():
             self.print_colourimetry(key)
 
-    def get_colourimetry(self, descriptor:str) -> Colourimetry:
+    def get_colourimetry(self, descriptor:str) -> colourimetry:
         try:
             return self.config[descriptor]
         except KeyError:
@@ -174,7 +174,7 @@ class TColour():
 
 
 if __name__ == "__main__":
-    config = TColour()
+    config = Config()
 
     config.add_colour_space("..\\tests\\files\\tcolor_test.yaml")
     config.print_all_colourimetry()

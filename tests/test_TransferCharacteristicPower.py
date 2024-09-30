@@ -1,5 +1,5 @@
 import unittest
-from tcolour import TransferCharacteristic as TC
+from tcolour import transfer_characteristic as TC
 
 class TestTransferCharacteristicPower(unittest.TestCase):
     def setUp(self) -> None:

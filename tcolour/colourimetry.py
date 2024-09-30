@@ -1,5 +1,5 @@
 from enum import Enum
-from . import TransferCharacteristic as TC
+from . import transfer_characteristic as TC
 
 class RGBPrimaries():
     """Defines a set of three RGB primaries using the CIE xy coordinate system."""

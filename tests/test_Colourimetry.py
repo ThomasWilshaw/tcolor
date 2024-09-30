@@ -1,10 +1,10 @@
 import unittest
-from tcolour import Colourimetry
-from tcolour import TransferCharacteristic as TC
+from tcolour import colourimetry
+from tcolour import transfer_characteristic as TC
 
 class TestColourimetry(unittest.TestCase):
     def test_valid(self):
-        col = Colourimetry.Colourimetry()
+        col = colourimetry.Colourimetry()
         # Should be invalid as nothing is set
         self.assertFalse(col.colourspace_valid())
 
