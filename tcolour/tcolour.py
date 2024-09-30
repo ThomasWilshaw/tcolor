@@ -123,15 +123,14 @@ class TColour():
         """Loop through the config and update any references"""
 
         for key, value in self.config.items():
-            value:Colourimetry
             # TODO: Make recursive maybe?
             if not value.primaries.valid():
                 if value.primaries.reference:
-                    self.config[key].primaries = self.config[value.primaries.reference].primaries
+                    self.config[key].primaries = self.get_colourimetry(value.primaries.reference).primaries
 
             if not value.achromatic_valid():
                 if type(value.achromatic) is str:
-                    self.config[key].achromatic = self.config[value.achromatic].achromatic
+                    self.config[key].achromatic = self.get_colourimetry(value.achromatic).achromatic
 
             if not value.transfer_characteristic.valid():
                 pass
@@ -147,9 +146,9 @@ class TColour():
             self.update_references()
 
     def print_colourimetry(self, descriptor):
-        """Pretty prints the colourimetry data set for the given descriptor"""
+        """Pretty prints the colourimetry data set for the given descriptor or alias"""
 
-        item:Colourimetry = self.config[descriptor]
+        item:Colourimetry = self.get_colourimetry(descriptor)
         print("-", item.descriptor)
         print("\tRGB Primaries: " + item.primaries.__str__())
         print("\tAchromatic Centroid: ", item.achromatic)
@@ -162,6 +161,15 @@ class TColour():
     def print_all_colourimetry(self):
         for key, value in self.config.items():
             self.print_colourimetry(key)
+
+    def get_colourimetry(self, descriptor:str) -> Colourimetry:
+        try:
+            return self.config[descriptor]
+        except KeyError:
+            for key, value in self.config.items():
+                if descriptor in value.alias:
+                    return self.config[key]
+            raise KeyError("%r not in config" % (descriptor))
             
 
 

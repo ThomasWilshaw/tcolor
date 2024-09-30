@@ -75,6 +75,6 @@
 # Append aliases to the previous definition
 - sRGB Presentation:
     Alias:
-        - sRGB,
-        - Internal_srgb_v2.0,
+        - sRGB
+        - Internal_srgb_v2.0
         - IEC sRGB
