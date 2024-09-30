@@ -58,50 +58,84 @@ class TColor():
         except KeyError as e:
             print("YAML ERROR: ", e)
 
+    def colourimetry_from_YAML(self,name, yaml_colourimetry):
+        new_colourimetry_set = Colourimetry.Colourimetry()
+        new_colourimetry_set.descriptor = name
+
+        if "RGB Primaries" in yaml_colourimetry:
+            primaries = yaml_colourimetry["RGB Primaries"]
+            if type(primaries) is dict:
+                new_colourimetry_set.primaries = self.RGBPrimaries_from_YAML(primaries)
+            elif type(primaries) is str:
+                new_colourimetry_set.primaries = Colourimetry.RGBPrimaries(reference=primaries)
+            else:
+                new_colourimetry_set.primaries = primaries
+
+        if "Achromatic Centroid" in yaml_colourimetry:
+            achromatic_centroid = yaml_colourimetry["Achromatic Centroid"]
+            if type(achromatic_centroid) is dict:
+                new_colourimetry_set.achromatic = self.achromatic_centroid_from_YAML(achromatic_centroid)
+            else:
+                new_colourimetry_set.achromatic = achromatic_centroid
+
+        if "Transfer Characteristic" in yaml_colourimetry:
+            transfer_characteristic = yaml_colourimetry["Transfer Characteristic"]
+            if type(transfer_characteristic) is list:
+                new_colourimetry_set.transfer_characteristic = self.transfer_charactersitc_from_YAML(transfer_characteristic)
+            else:
+                new_colourimetry_set.transfer_characteristic = TransferCharacteristic.TransferCharacteristic()
+
+        if "Hints" in yaml_colourimetry:
+            new_colourimetry_set.hints = yaml_colourimetry["Hints"]
+
+        if "Alias" in yaml_colourimetry:
+            new_colourimetry_set.alias = yaml_colourimetry["Alias"]
+
+        if "CIE Version" in yaml_colourimetry:
+            new_colourimetry_set.cie_version = yaml_colourimetry["CIE Version"]
+
+        return new_colourimetry_set
 
     def parse_data(self, data:list):
         """Parse the YAML data"""
         for id, idx in enumerate(data):
-            try:
-                new_colourimetry_set = Colourimetry.Colourimetry()
-                name = list(data[id].keys())[0]
-                colour_space = data[id][name]
+ 
+            name = list(data[id].keys())[0]
+            yaml_colourimetry = data[id][name]
 
-                new_colourimetry_set.descriptor = name
+            if name in self.config:
+                print("WARNING: Colour space repeated (" + name + ")")
+                print("Only Alias and Hints can be merged. To redifine colourimetry lease delete the chunk and re add")
+                new_colourimetry = self.colourimetry_from_YAML(name, yaml_colourimetry)
+                existing_colourimetry = self.config[name]
 
-                if "RGB Primaries" in colour_space:
-                    primaries = colour_space["RGB Primaries"]
-                    if type(primaries) is dict:
-                        new_colourimetry_set.primaries = self.RGBPrimaries_from_YAML(primaries)
-                    else:
-                        new_colourimetry_set.primaries = primaries
+                #print(existing_colourimetry)
 
-                if "Achromatic Centroid" in colour_space:
-                    achromatic_centroid = colour_space["Achromatic Centroid"]
-                    if type(achromatic_centroid) is dict:
-                        new_colourimetry_set.achromatic = self.achromatic_centroid_from_YAML(achromatic_centroid)
-                    else:
-                        new_colourimetry_set.achromatic = achromatic_centroid
+                existing_colourimetry.hints = existing_colourimetry.hints + new_colourimetry.hints
+                existing_colourimetry.alias = existing_colourimetry.alias + new_colourimetry.alias
+            else:
+                try:
+                    self.config[str(name)] = self.colourimetry_from_YAML(name, yaml_colourimetry)
+                except Exception as e:
+                    print(e, "Skipping this Colourimetry chunk")
 
-                if "Transfer Characteristic" in colour_space:
-                    transfer_characteristic = colour_space["Transfer Characteristic"]
-                    if type(transfer_characteristic) is list:
-                        new_colourimetry_set.transfer_characteristic = self.transfer_charactersitc_from_YAML(transfer_characteristic)
-                    else:
-                        new_colourimetry_set.transfer_characteristic = transfer_characteristic
+    def update_references(self):
+        """Loop through the config and update any references"""
 
-                if "Hints" in colour_space:
-                    new_colourimetry_set.hints = colour_space["Hints"]
+        for key, value in self.config.items():
+            value:Colourimetry
+            # TODO: Make recursive maybe?
+            if not value.primaries.valid():
+                if value.primaries.reference:
+                    self.config[key].primaries = self.config[value.primaries.reference].primaries
 
-                if "Alias" in colour_space:
-                    new_colourimetry_set.alias = colour_space["Alias"]
+            if not value.achromatic_valid():
+                if type(value.achromatic) is str:
+                    self.config[key].achromatic = self.config[value.achromatic].achromatic
 
-                if "CIE Version" in colour_space:
-                    new_colourimetry_set.cie_version = colour_space["CIE Version"]
-
-                self.config[str(name)] = new_colourimetry_set
-            except Exception as e:
-                print(e, "Skipping this Colourimetry chunk")
+            if not value.transfer_characteristic.valid():
+                pass
+                #print(key)
                 
 
     def add_colour_space(self, colour_space):
@@ -110,6 +144,7 @@ class TColor():
         with open(colour_space, 'r') as file:
             data = yaml.safe_load(file)
             self.parse_data(data)
+            self.update_references()
 
     def print_colourimetry(self, descriptor):
         """Pretty prints the colourimetry data set for the given descriptor"""

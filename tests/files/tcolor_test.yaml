@@ -29,8 +29,8 @@
     Achromatic Centroid: {x: 0.3127, y: 0.3290}
     
 - sRGB Presentation:
-    RGB Primaries: BT.709 Primaries,
-    Achromatic Centroid: D65 White,
+    RGB Primaries: BT.709 Primaries
+    Achromatic Centroid: D65 White
     Transfer Characteristic:
         - Type: Sequence
         - Sequence:

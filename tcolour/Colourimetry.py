@@ -1,15 +1,19 @@
 from enum import Enum
+import TransferCharacteristic as TC
 
 class RGBPrimaries():
     """Defines a set of three RGB primaries using the CIE xy coordinate system."""
 
-    def __init__(self, r=[], g=[], b=[]) -> None:
+    def __init__(self, r=[], g=[], b=[], reference="") -> None:
         self.r = r
         self.g = g
         self.b = b
+        self.reference = reference
 
     def valid(self) -> bool:
         if not self.r or not self.g or not self.b:
+            return False
+        if self.reference:
             return False
 
         return True
@@ -39,7 +43,7 @@ class Colourimetry:
 
     """
     def __init__(self, descriptor:str="", rgb_primaries:RGBPrimaries=RGBPrimaries(), achromatic:list=[], 
-                 transfer_characteristic=None, hints:list=[], alias:list=[],
+                 transfer_characteristic=TC.TransferCharacteristic(), hints:list=[], alias:list=[],
                  cie_version:CIEVersion=None) -> None:
         self.descriptor = descriptor
         self.primaries = rgb_primaries
@@ -61,10 +65,8 @@ class Colourimetry:
             return False
         if not self.achromatic_valid():
             return False
-        if self.transfer_characteristic is None:
-            return False
         if not self.transfer_characteristic.valid():
-            return True
+            return False
         return True
 
     def __repr__(self) -> str:
