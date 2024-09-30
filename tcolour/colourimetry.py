@@ -31,7 +31,7 @@ class CIEVersion(Enum):
 
 
 class Colourimetry:
-    """Holds all the data required to define a colour space\n
+    """Holds colourmetric data\n
     Attributes:\n
         descriptor:                 A unique identifying key.
         primaries:                  An array defining a set of three RGB primaries using the CIE xy coordinate system.
