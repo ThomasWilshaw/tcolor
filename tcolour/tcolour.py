@@ -166,7 +166,7 @@ class TColour():
 
 
 if __name__ == "__main__":
-    config = TColor()
+    config = TColour()
 
     config.add_colour_space("..\\tests\\files\\tcolor_test.yaml")
     config.print_all_colourimetry()
