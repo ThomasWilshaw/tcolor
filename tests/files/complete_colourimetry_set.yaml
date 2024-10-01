@@ -1,0 +1,19 @@
+- Complete bogus set:
+    RGB Primaries: {
+        Red: {x: 0.640, y: 0.330},
+        Green: {x: 0.300, y: 0.600},
+        Blue: {x: 0.150, y: 0.060}
+    }
+    Achromatic Centroid: {x: 0.3127, y: 0.3290}
+    Transfer Characteristic:
+        - Type: Parametric
+        - Function: power
+        - Parameters: {
+            a: 2.2
+        }
+    Hints:
+        - Hint
+        - Other hint
+    Alias:
+        - sRGB
+    CIE Version: CIE_1931_2_DEGREE

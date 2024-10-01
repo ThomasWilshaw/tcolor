@@ -141,10 +141,19 @@ class Config():
         """Add a colourinemtry data to the config as either a file or a string"""
 
         if isinstance(input, str):
-            with open(input, 'r') as file:
-                data = yaml.safe_load(file)
-                self.parse_data(data)
-                self.update_references()
+            data = None
+            try:
+                with open(input, 'r') as file:
+                    data = yaml.safe_load(file)
+            except Exception:
+                try:
+                    data = yaml.safe_load(input)
+                except Exception as e:
+                    print(e, "Could not parse input")
+
+            self.parse_data(data)
+            self.update_references()
+
         elif isinstance(input, colourimetry.Colourimetry):
             if input.descriptor in self.config:
                 existing_colourimetry = self.config[input.descriptor]
@@ -153,7 +162,7 @@ class Config():
             else:
                 self.config[input.descriptor] = input
         else:
-            raise TypeError("Input Colourimetry is of the wrong type. Must be file path of Colourimetry() class")
+            raise TypeError("Input Colourimetry is of the wrong type. Must be file path, Colourimetry() class or stream")
 
     def print_colourimetry(self, descriptor):
         """Pretty prints the colourimetry data set for the given descriptor or alias"""
